@@ -1,0 +1,13 @@
+{% comment %}
+  The contents of the product.liquid template can be found in /sections/product-template.liquid
+{% endcomment %}
+
+{% section 'product-template' %}
+{% section 'product-recommendations' %}
+
+<script type="application/json" id="ProductJson-{{ product.id }}">
+  {{ product | json }}
+</script>
+
+{% render 'structured-data-product', product: product, current_variant: product.selected_or_first_available_variant %}
+{% include 'wiser_related' %}{% include 'wiser_recommended' %}{% include 'wiser_alsobought' %}{% include 'wiser_recentview' %}{% include 'wiser_topselling' %}{% include 'wiser_trending' %}{% include 'wiser_newarrivals' %}{% include 'wiser_featured' %}{% include 'wiser_recent_related' %}
