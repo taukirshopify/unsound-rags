@@ -2577,7 +2577,7 @@
           "show_pickup_availability": true,
           "show_backorder_text": true,
           "show_inventory_notice": false,
-          "inventory_notice_threshold": 10,
+          "inventory_notice_threshold": 22,
           "show_sharing_links": false,
           "show_tags": false,
           "description_location": "beside",
