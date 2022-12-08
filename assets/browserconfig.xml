@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+    <msapplication>
+        <tile>
+            <square150x150logo src="//cdn.shopify.com/s/files/1/0286/5954/8213/t/5/assets/mstile-150x150.png?v=A05NqQgq0a"/>
+            <square310x310logo src="//cdn.shopify.com/s/files/1/0286/5954/8213/t/5/assets/mstile-310x310.png?v=A05NqQgq0a"/>
+            <TileColor>#acacac</TileColor>
+        </tile>
+    </msapplication>
+</browserconfig>

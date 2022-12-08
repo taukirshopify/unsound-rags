@@ -1,0 +1,8 @@
+{% comment %}
+  The contents of the collection.liquid template can be found in /sections/collection-template.liquid
+{% endcomment %}
+<!-- { % section 'collection-filters-section' %} -->
+{{ 'custom.css' | asset_url | stylesheet_tag }}
+{{ 'jQuery.filters.js'  | asset_url | script_tag }}
+{% section 'collection-template' %}
+{% include 'wiser_trending' %}{% include 'wiser_recentview' %}{% include 'wiser_newarrivals' %}{% include 'wiser_featured' %}{% include 'wiser_topselling' %}{% include 'wiser_recent_related' %}

@@ -1,0 +1,104 @@
+{%- if collection -%}
+  {% capture product_url %}{{ product.url | within: collection }}{% endcapture %}
+{%- else -%}
+  {% capture product_url %}{{ product.url }}{% endcapture %}
+{%- endif -%}
+
+{%- if settings.prod_thumb_hover_image and product.media.size > 1 and settings.prod_hov_type != 'hover' -%}
+  {%- assign show_hover_image = true -%}
+{%- else -%}
+  {%- assign show_hover_image = false -%}
+{%- endif -%}
+
+<div data-product-id="{{ product.id }}" class="product-block detail-mode-{{ settings.prod_hov_type }}">
+  <div class="block-inner">
+    <div class="block-inner-inner">
+      {% if product.featured_media %}
+        <div class="image-cont {% if show_hover_image %}with-secondary-image {% if product.featured_media.preview_image.aspect_ratio == product.media[1].preview_image.aspect_ratio %}same-aspect-ratio{% endif %}{% endif %}">
+          <a class="product-link" href="{{ product_url }}" aria-label="{{ product.title | escape }}">
+            <div class="image-label-wrap">
+              <div class="primary-image">
+                {% render 'responsive-image', image: product.featured_media.preview_image, manual_image_load: manual_image_load, min_aspect_ratio: 0.6 %}
+              </div>
+              {% if show_hover_image %}
+                <div class="secondary-image lazyload{% if manual_image_load %}--manual{% endif %} rimage-background"
+                  data-bgset="{% render 'bgset', image: product.media[1].preview_image %}"
+                  data-sizes="auto"
+                  data-parent-fit="contain"></div>
+              {% endif %}
+              {% render 'product-label', product: product %}
+            </div>
+          </a>
+        </div>
+      {% else %}
+        <div class="image-cont">
+          <div class="placeholder-image">{{ 'product-1' | placeholder_svg_tag }}</div>
+        </div>
+      {% endif %}
+
+      <div class="product-info">
+        <div class="inner">
+          <div class="innerer">
+            <a class="product-link" href="{{ product_url }}">
+              {% if section.settings.show_vendor %}
+              <div class="vendor">{{ product.vendor }}</div>
+              {% endif %}
+              <div class="product-block__title">{{ product.title }}</div>
+              <div class="dash">-</div>
+              
+              <div>
+              <span>Size: </span>
+              {% for variant in product.variants %}
+              <span>{{ variant.title }}</span>
+              {% endfor %}
+			  </div>
+              
+			{% if product.available %}
+
+              {%- assign cheapest_variant = product.variants | sort: 'price' | first -%}
+              <span class="price">
+                {% if product.price_varies %}
+                <span class="from">{{ 'products.listing.from' | t }}</span>
+                {% endif %}
+                <span class="theme-money {% if cheapest_variant.compare_at_price > cheapest_variant.price %}on-sale{% endif %}">{{ cheapest_variant.price | money }}</span>
+              </span>
+              {% if cheapest_variant.compare_at_price > cheapest_variant.price %}
+              <div class="reducedfrom"><span class="amount theme-money">{{ cheapest_variant.compare_at_price | money }}</span></div>
+              {% endif %}
+
+              {% render 'unit-price', variant: cheapest_variant %}
+              {% else %}
+              
+              <span>sold out</span>
+
+			{% endif %}
+              
+
+              <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-block-buttons">
+        <div class="lightly-spaced-row">
+          <a class="button altcolour" href="{{ product_url }}">{{ 'products.quick_buy.full_details' | t }}</a>
+        </div>
+        {% if settings.prod_thumb_detail_show %}
+          <div>
+            <a class="button product-link" href="{{ product_url }}">{{ 'products.quick_buy.launch' | t }}</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {%- if settings.prod_thumb_detail_show -%}
+    {%- unless no_quick_buy_markup -%}
+      <div class="quickbuy-container">
+        <a href="#" class="close-detail" aria-label="{{ 'products.quick_buy.close' | t }}" tabindex="-1">{% render 'svg-x' %}</a>
+        <div class="inner"></div>
+      </div>
+    {%- endunless -%}
+  {%- endif -%}
+</div>

@@ -1,0 +1,142 @@
+{% if section.settings.announcement_show != blank %}
+ 
+{% comment %}{% *if section.settings.announcement_show or section.settings.show_locale_selector or section.settings.show_currency_selector or section.settings.menu != blank %}{% endcomment %}
+  <div id="section-id-{{ section.id }}" class="announcement-bar announcement-bar--align-{{ section.settings.announcement_align }}" data-section-type="announcement-bar">
+    {% style %}
+      #section-id-{{ section.id }} {
+        background: {{ section.settings.announcement_bar_col }};
+        color: {{ section.settings.announcement_text_col }};
+      }
+    {% endstyle %}
+
+    {%- capture announcement_html -%}
+      {%- if section.settings.announcement_show -%}
+        {%- if section.settings.announcement_link != blank -%}
+          <a class="announcement-bar__link" href="{{ section.settings.announcement_link }}">
+        {%- endif -%}
+        <div class="announcement-bar__inner">{{ section.settings.announcement_text }}</div>
+        {%- if section.settings.announcement_link != blank -%}
+          </a>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endcapture -%}
+
+    <div class="container container--no-max">
+      <div class="announcement-bar__left">
+        {% if section.settings.announcement_align == 'left' %}{{ announcement_html }}{% endif %}
+      </div>
+
+      {% if section.settings.announcement_align == 'center' %}
+        <div class="announcement-bar__middle">
+          {{ announcement_html }}
+        </div>
+      {% endif %}
+
+      <div class="announcement-bar__right">
+        {% if section.settings.menu != blank %}
+          <span class="inline-menu desktop-only">
+            {% for link in linklists[section.settings.menu].links %}
+              <a class="inline-menu__link announcement-bar__link" href="{{ link.url }}">{{ link.title }}</a>
+            {% endfor %}
+          </span>
+        {% endif %}
+        {% if section.settings.show_locale_selector or section.settings.show_currency_selector %}
+          <div class="header-disclosures desktop-only">
+            {% render 'localization', input_prefix: 'annbar' %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+
+{% schema %}
+  {
+    "name": "Announcement bar",
+    "class": "section-announcement-bar",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "announcement_show",
+        "label": "Show announcement",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "announcement_align",
+        "label": "Alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ],
+        "default": "center"
+      },
+      {
+        "type": "text",
+        "id": "announcement_text",
+        "label": "Text",
+        "default": "Announce something here"
+      },
+      {
+        "type": "url",
+        "id": "announcement_link",
+        "label": "Link"
+      },
+      {
+        "type": "color",
+        "id": "announcement_bar_col",
+        "label": "Bar",
+        "default": "#4a4a4a"
+      },
+      {
+        "type": "color",
+        "id": "announcement_text_col",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Links"
+      },
+      {
+        "type": "paragraph",
+        "content": "These will not show on mobile. Add to your footer as well to ensure they are available for all customers."
+      },
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu",
+        "info": "This menu won't show dropdown items"
+      },
+      {
+        "type": "header",
+        "content": "Language Selector",
+        "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_locale_selector",
+        "label": "Show language selector",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Currency Selector",
+        "info": "To add a currency, go to your [payment settings.](/admin/settings/payments)"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_currency_selector",
+        "label": "Show currency selector",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

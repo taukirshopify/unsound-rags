@@ -1,0 +1,64 @@
+<style>
+  {%- assign background_alpha = section.settings.overlay_background_color | color_extract: 'alpha' -%}
+  .collection-listing .product-block.collection-block .productlabel > span {
+    color: {{ section.settings.overlay_text_color }};
+    background-color: {% if background_alpha == 0 %}transparent{% else %}{{ section.settings.overlay_background_color | color_modify: 'alpha', 0.8 }}{% endif %};
+  }
+
+  .collection-listing .product-block.collection-block:hover .productlabel > span {
+    background-color: {% if background_alpha == 0 %}transparent{% else %}{{ section.settings.overlay_background_color | color_modify: 'alpha', 0.9 }}{% endif %};
+  }
+</style>
+
+<div data-section-type="page-list-collections-template">
+  <div class="container">
+    <div class="page-header cf">
+      <h1 class="majortitle">
+        {{ page.title }}
+      </h1>
+
+      {% if page.content != blank %}
+      <div class="user-content lightly-spaced-row">
+        {{ page.content }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+
+  <div class="container{% if settings.use_fullwidth_layout %} container--no-max{% endif %}">
+    <div class="collection-listing overlay-mode-{{ section.settings.overlay_mode }}">
+      <div class="product-list product-list--per-row-{{ section.settings.grid }} product-list--image-shape-{{ settings.prod_thumb_shape }}">
+        {% for link in linklists[page.handle].links %}
+          {% if link.type == 'collection_link' %}
+            {% render 'collection-block', collection: link.object %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Collection lists",
+    "settings": [
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Collections per row",
+        "min": 2,
+        "max": 5,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "checkbox",
+        "id": "show_count",
+        "label": "Show product count",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

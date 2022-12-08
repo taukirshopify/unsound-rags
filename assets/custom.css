@@ -1,0 +1,229 @@
+li.xxxx-large.checkcontainer.advanced-filter.rt {
+    order: 8;
+}
+li.xxx-large.checkcontainer.advanced-filter.rt {
+    order: 7;
+}
+li.xx-large.checkcontainer.advanced-filter.rt {
+    order: 6;
+}
+li.x-small.checkcontainer.advanced-filter.rt {
+    order: 1;
+}
+li.x-large.checkcontainer.advanced-filter.rt {
+    order: 5;
+}
+li.small.checkcontainer.advanced-filter.rt {
+    order: 2;
+}
+li.medium.checkcontainer.advanced-filter.rt {
+    order: 3;
+}
+li.large.checkcontainer.advanced-filter.rt {
+    order: 4;
+}
+.checkcontainer {
+  -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  cursor: pointer;
+  display: block;
+/*   font-size: 16px;
+  margin-bottom: 8px;
+  padding-left: 20px; */
+  position: relative;
+}
+
+/* Hide the browser's default checkbox */
+.checkcontainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  background-color: #eeeeee;
+  height: 15px;
+  left: 0;
+  position: absolute;
+  top: 3px;
+  width: 15px;
+}
+
+/* On mouse-over, add a grey background color */
+.checkcontainer:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkcontainer.active-filter input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.checkcontainer.active-filter input:checked ~ .checkmark::after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkcontainer .checkmark:after {
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.filter-sidebar .sbf-title {
+/*   border-bottom: 1px solid; */
+  display: block;
+/*   font-size: 18px; */
+  font-weight: 600;
+  margin-bottom: 10px;
+  margin-top: 12px;
+}
+.customfilter h2.sb-title {
+    text-align: left;
+    margin-top: 25px;
+}
+.sb-filter .advanced-filters {
+  max-height: 220px;
+  overflow: auto;
+}
+.sb-widget.filter-sidebar.no-sidebar.dropdown {
+  padding: 0 20px 0 0;
+}
+.coll_prodbar .grid--view-items {
+  border-left: 1px solid #000;
+  margin: 0;
+  padding-left: 20px;
+}
+.checkcontainer.active-filter.advanced-filter.rt > a {
+  font-weight: 600;
+}
+.customfilter .filter__widget .sb-filter{
+display: flex;
+    flex-wrap: wrap;
+    text-align: left;
+    align-items: flex-start;
+}
+.clearfiltrs {
+    text-align: left;
+    margin: 10px 0;
+}
+.clearfiltrs a{
+    border: 1px solid #c6c6c6;
+    padding: 5px;
+}
+.customfilter .filter__widget .sbf-title{
+      width: 15%;
+}
+.customfilter .sb-filter .listitms{
+    width: 80%;
+}
+.customfilter .checkmark {
+  display: none;}
+.customfilter .sb-filter .listitms ul.advanced-filters{
+display: flex;
+}
+.customfilter .sb-filter .listitms ul.advanced-filters li{
+margin-right:20px;
+  list-style: none;
+  padding: 2px 5px;
+}
+.customfilter .sb-filter .listitms ul.advanced-filters li.active-filter{
+    border: 1px solid #c6c6c6;
+}
+div#shopify-section-collection-template .page-header .filters{
+    margin: 7px 0 0 0;
+       padding-bottom: 10px;
+    padding-top: 5px;
+      border-bottom: 1px solid #c6c6c6;
+}
+div#shopify-section-collection-template .page-header.cf {
+    position: relative;
+}
+.customfilter {
+    position: absolute;
+  opacity:0;
+    width: 100%;
+      top: 45px;
+    
+  left: 0;
+    right: 0;
+  padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 12px;
+    background: white;
+  transition: opacity 0.5s;
+}
+.customfilter.thsone {
+    opacity: 1;
+  z-index: 9999;
+}
+@media screen and (max-width: 550px) {
+.customfilter .filter__widget .sbf-title {
+    width: 100%;
+}
+  .customfilter .sb-filter .listitms {
+    width: 100%;
+}
+  .customfilter .sb-filter .listitms ul.advanced-filters {
+    margin-left: unset;
+    margin-right: unset;}
+  .filter-sidebar .sbf-title {
+    font-size: 10px;}
+  .customfilter h2.sb-title {
+    font-size: 10px;}
+}
+
+.product-form .selector-wrapper {
+  margin-bottom: 10px;
+}
+
+.product-form .quantity-submit-row .quantity-submit-row__submit
+{
+	margin-top: 0 !important;
+	margin-bottom: 10px !important;
+}
+
+.product-form .input-row
+{
+	margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+
+/*
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 1) { 
+  .product-column-right .desktop-price-variant .product-form .quantity-submit-row .quantity-submit-row__submit .button {
+      margin-top: 10px !important;
+  }
+}
+
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) 
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (min-resolution: 192dpi) { 
+  .product-column-right .desktop-price-variant .product-form .quantity-submit-row .quantity-submit-row__submit .button {
+      margin-top: 10px !important;
+  }
+}
+*/

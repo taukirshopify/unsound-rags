@@ -1,0 +1,306 @@
+<div data-section-type="collection-template">
+{% paginate collection.products by section.settings.coll_num_per_page_int %}
+
+<div class="container">
+  <div class="page-header cf" style="padding-bottom: 0 !important; padding-left: 10px; padding-right: 10px;">
+    {% if section.settings.coll_desc_pos == 'below' %}
+    {% comment %}<h1 class="majortitle mobile-only" style="padding-top: 10px;">{{ collection.title | escape }}</h1>{% endcomment %}
+    {% endif %}
+
+    {% if collection.description != blank %}
+    <div class="user-content cf lightly-spaced-row">
+      {{ collection.description }}
+    </div>
+    {% endif %}
+
+    {% if section.settings.coll_desc_pos == 'above' %}
+    <h1 class="majortitle">{{ collection.title | escape }}</h1>
+    {% endif %}
+
+    {% comment %} Which tags should we show, and group them into categories {% endcomment %}
+    {%- assign show_normal_filter = false -%}
+    {%- assign show_normal_filter3 = true -%}
+    {%- assign show_custom_filter_1 = false -%}
+    {%- assign show_custom_filter_2 = false -%}
+
+    {%- if section.settings.show_tagfilt_custom1 -%}
+      {%- assign custom_tag_arr1 = section.settings.tagfilt_custom1_tags | replace: ', ',',' | split: ',' -%}
+      {%- capture filter1_html -%}
+        {%- for tag in custom_tag_arr1 -%}
+          {%- unless tag contains 'meta-' -%}
+            {%- if collection.all_tags contains tag -%}
+              {%- assign show_custom_filter_1 = true -%}
+              {%- if current_tags contains tag -%}
+                <li class="navigation__item active" data-tag="{{tag | handleize}}">{{ tag | append: ' <span class="x">&times;</span>' | link_to_remove_tag: tag | replace: '<a ', '<a class="navigation__link" ' }}</li>
+              {%- else -%}
+                <li class="navigation__item" data-tag="{{tag | handleize}}">{{ tag | link_to_add_tag: tag | replace: '<a ', '<a class="navigation__link" ' }}</li>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+    {%- endif -%}
+
+    {%- if section.settings.show_tagfilt_custom2 -%}
+      {%- assign custom_tag_arr2 = section.settings.tagfilt_custom2_tags | replace: ', ',',' | split: ',' -%}
+      {%- capture filter2_html -%}
+        {%- for tag in custom_tag_arr2 -%}
+          {%- unless tag contains 'meta-' -%}
+            {%- if collection.all_tags contains tag -%}
+              {%- assign show_custom_filter_2 = true -%}
+              {%- if current_tags contains tag -%}
+                <li class="navigation__item active" data-tag="{{tag | handleize}}">{{ tag | append: ' <span class="x">&times;</span>' | link_to_remove_tag: tag | replace: '<a ', '<a class="navigation__link" ' }}</li>
+              {%- else -%}
+                <li class="navigation__item" data-tag="{{tag | handleize}}">{{ tag | link_to_add_tag: tag | replace: '<a ', '<a class="navigation__link" ' }}</li>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endunless -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+    {%- endif -%}
+
+    {%- if section.settings.coll_show_tags -%}
+      {%- capture filter_html -%}
+      {%- for tag in collection.all_tags -%}
+        {%- unless tag contains 'meta-' or custom_tag_arr1 contains tag or custom_tag_arr2 contains tag -%}
+          {%- assign show_normal_filter = true -%}
+          {%- if current_tags contains tag -%}
+            <li class="navigation__item active" data-tag="{{tag | handleize}}">{{ tag | append: ' <span class="x">&times;</span>' | link_to_remove_tag: tag | replace: '<a ', '<a class="navigation__link" ' }}</li>
+          {%- else -%}
+            <li class="navigation__item" data-tag="{{tag | handleize}}">{{ tag | link_to_add_tag: tag | replace: '<a ', '<a class="navigation__link" ' }}</li>
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+      {%- endcapture -%}
+    {%- endif -%}
+   
+    <div class="filters mobile-onlyd">
+      {% if show_normal_filter %} 
+      <a href="#" class="tags" data-toggle-target=".tags.navigation.cat-normal">{{ 'collections.filtering.filter' | t }} <span class="state">+</span></a>
+      {% endif %}
+
+      {% if show_custom_filter_1 %}
+      <a href="#" class="tags" data-toggle-target=".tags.navigation.cat-custom-1">{{ section.settings.tagfilt_custom1_name | escape }} <span class="state">+</span></a>
+      {% endif %}
+
+      {% if show_custom_filter_2 %}
+      <a href="#" class="tags" data-toggle-target=".tags.navigation.cat-custom-2">{{ section.settings.tagfilt_custom2_name | escape }} <span class="state">+</span></a>
+      {% endif %}
+
+      {% if section.settings.coll_show_sort %}
+      <span class="" style="text-align: left; margin-top: 0px;">
+       {{ collection.title | escape }}
+      </span>
+      <span class="openfilter" style="text-align: right; cursor: pointer; flex-basis: auto; border: solid 1px; padding: 5px 7px; line-height: 1;">
+      Filter
+      </span>
+      <span class="sort tags" style="display:none; text-align: right; flex-basis: auto;">
+        {% comment %}<label for="sort-by">{{ 'collections.sorting.title' | t }}</label>{% endcomment %}
+        <span class="styled-select styled-select--inline">
+          {% assign current_sort = collection.sort_by | default: collection.default_sort_by %}
+          <select id="sort-by">
+            <option value="price-ascending" {% if current_sort == 'price-ascending' %}selected{% endif %}>{{ 'collections.sorting.price_ascending' | t }}</option>
+            <option value="price-descending" {% if current_sort == 'price-descending' %}selected{% endif %}>{{ 'collections.sorting.price_descending' | t }}</option>
+            <option value="title-ascending" {% if current_sort == 'title-ascending' %}selected{% endif %}>{{ 'collections.sorting.az' | t }}</option>
+            <option value="title-descending" {% if current_sort == 'title-descending' %}selected{% endif %}>{{ 'collections.sorting.za' | t }}</option>
+            <option value="created-descending">{{ 'collections.sorting.date_descending' | t }}</option>
+            <option value="created-ascending" {% if current_sort == 'created-ascending' %}selected{% endif %}>{{ 'collections.sorting.date_ascending' | t }}</option>
+            <option value="created-descending" {% if current_sort == 'created-descending' %}selected{% endif %}>SORT BY</option>
+            <option value="best-selling" {% if current_sort == 'best-selling' %}selected{% endif %}>{{ 'collections.sorting.best_selling' | t }}</option>
+            {% if section.settings.coll_show_feat or collection.default_sort_by == 'manual' %}<option value="manual" {% if current_sort == 'manual' %}selected{% endif %}>{{ 'collections.sorting.featured' | t }}</option>{% endif %}
+          </select>
+        </span>
+      </span>
+      {% endif %}
+    
+    </div><!-- /.filters -->
+       <div class="customfilter">
+    {% include "filters-code" %}
+    </div>
+  </div><!-- /.page-header -->
+</div><!-- /.container -->
+
+<div class="multi-tag-row">
+  {% if show_normal_filter3 %}
+  <div class="tags navigation cat-normal {% unless filter_html contains 'class="active"' %}hidden{% endunless %}">
+    <div class="navigation__tier-1-container">
+      <ul class="navigation__tier-1">
+        {{ filter_html }}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if show_custom_filter_1 %}
+  <div class="tags navigation cat-custom-1 {% unless filter1_html contains 'class="active"' %}hidden{% endunless %}">
+    <div class="navigation__tier-1-container">
+      <ul class="navigation__tier-1">
+        {{ filter1_html }}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if show_custom_filter_2 %}
+  <div class="tags navigation cat-custom-2 {% unless filter2_html contains 'class="active"' %}hidden{% endunless %}">
+    <div class="navigation__tier-1-container">
+      <ul class="navigation__tier-1">
+        {{ filter2_html }}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+</div><!-- /.multi-tag-row -->
+
+{% if collection.products.size == 0 %}
+    <div class="container"><h5 class="align-centre fully-spaced-row">{{ 'collections.general.no_matches' | t }}</h5></div>
+{% else %}
+    <div class="container{% if settings.use_fullwidth_layout %} container--no-max{% endif %}">
+      <div class="collection-listing{% if section.settings.coll_gridstream_mode == 'stream' %}-stream{% endif %} cf">
+        <div class="product-list product-list--per-row-{{ section.settings.grid }} product-list--image-shape-{{ settings.prod_thumb_shape }}">
+          {% for product in collection.products %}
+            {% render 'product-block', product: product %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+{% endif %}
+
+<div class="container pagination-row">{% render 'pagination-control', paginate: paginate %}</div>
+
+{% endpaginate %}
+</div>
+
+
+{% schema %}
+  {
+    "name": "Collection pages",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show product vendors",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "coll_desc_pos",
+        "label": "Description position",
+        "options": [
+          {
+            "value": "below",
+            "label": "Below collection title"
+          },
+          {
+            "value": "above",
+            "label": "Above collection title"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "coll_show_sort",
+        "label": "Show 'sort by' dropdown",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "coll_show_feat",
+        "label": "Show 'Featured' in sort by",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "coll_show_tags",
+        "label": "Show ungrouped tags",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Tag group 1"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_tagfilt_custom1",
+        "label": "Show",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "tagfilt_custom1_name",
+        "label": "Name"
+      },
+      {
+        "type": "text",
+        "id": "tagfilt_custom1_tags",
+        "label": "Tags to include",
+        "info": "Case-sensitive. Separate with commas."
+      },
+      {
+        "type": "header",
+        "content": "Tag group 2"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_tagfilt_custom2",
+        "label": "Show",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "tagfilt_custom2_name",
+        "label": "Name"
+      },
+      {
+        "type": "text",
+        "id": "tagfilt_custom2_tags",
+        "label": "Tags to include",
+        "info": "Case-sensitive. Separate with commas."
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "range",
+        "id": "coll_num_per_page_int",
+        "min": 16,
+        "max": 50,
+        "step": 2,
+        "label": "Number of products to show per page",
+        "default": 24
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Products per row",
+        "min": 2,
+        "max": 5,
+        "step": 1,
+        "default": 4
+      },
+      {
+        "type": "select",
+        "id": "coll_gridstream_mode",
+        "label": "Show products in a grid or a list",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid"
+          },
+          {
+            "value": "stream",
+            "label": "List"
+          }
+        ],
+        "default": "grid"
+      },
+      {
+        "type": "checkbox",
+        "id": "coll_gridstream_toggle",
+        "label": "Show toggle for grid and list views",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

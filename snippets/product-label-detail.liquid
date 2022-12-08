@@ -1,0 +1,18 @@
+<span class="productlabel-container">
+  {%- for variant in product.variants -%}
+    <script id="variant-label-{{ variant.id }}" type="text/template">
+      {%- capture label -%}
+        {%- if variant.available == false and settings.prod_sold_out_show -%}
+          <span class="productlabel soldout"><span>{{ 'products.labels.sold_out' | t }}</span></span>
+        {%- else -%}
+          {%- if settings.prod_sale_show and variant.compare_at_price > variant.price -%}
+            <span class="productlabel sale"><span>{{ 'products.labels.sale' | t }}</span></span>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endcapture -%}
+
+      {{- label -}}
+    </script>
+    {% if variant.id == current_variant.id %}{{ label }}{% endif %}
+  {%- endfor -%}
+</span>
